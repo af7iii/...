@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<title>শুভ জন্মদিন 🤍</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+<style>
+*{margin:0; padding:0; box-sizing:border-box; font-family:'Noto Serif Bengali', serif;}
+
+body{
+  height:100vh;
+  background:#0b132b;
+  overflow:hidden;
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+}
+
+/* Canvas for fireworks */
+canvas{
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  z-index:1;
+}
+
+/* Floating hearts */
+.heart{
+  position:absolute;
+  bottom:-20px;
+  font-size:22px;
+  animation: float 7s linear infinite;
+  opacity:0.8;
+}
+@keyframes float{
+  0%{ transform:translateY(0) scale(1); opacity:0;}
+  10%{opacity:1;}
+  100%{ transform:translateY(-120vh) scale(1.6); opacity:0;}
+}
+
+/* Card */
+.card{
+  position:relative;
+  width:90%;
+  max-width:420px;
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(18px);
+  border-radius:24px;
+  padding:24px 20px;
+  box-shadow:0 25px 50px rgba(0,0,0,0.6);
+  z-index:2;
+  text-align:center;
+}
+
+/* Title */
+.title{
+  font-size:28px;
+  margin-bottom:16px;
+  background: linear-gradient(90deg,#ff4ecd,#ffd369,#4efcff,#ffffff);
+  -webkit-background-clip:text;
+  color:transparent;
+  animation: glowText 3s infinite alternate;
+}
+@keyframes glowText{
+  0%{ text-shadow:0 0 10px #ff4ecd,0 0 20px #ffd369;}
+  100%{ text-shadow:0 0 20px #4efcff,0 0 40px #ffffff;}
+}
+
+/* Text */
+.text{
+  font-size:15px;
+  line-height:1.9;
+  white-space:pre-line;
+  color:#f2f2f2;
+  text-shadow:0 0 5px #ffffff;
+}
+
+/* Signature */
+.signature{
+  margin-top:22px;
+  text-align:right;
+  font-size:14px;
+  opacity:0.9;
+  color:#ffb3c1;
+}
+</style>
+</head>
+<body>
+
+<canvas id="fw"></canvas>
+
+<!-- Floating hearts -->
+<div class="heart" style="left:10%;">❤️</div>
+<div class="heart" style="left:30%;">❤️</div>
+<div class="heart" style="left:50%;">❤️</div>
+<div class="heart" style="left:70%;">❤️</div>
+<div class="heart" style="left:90%;">❤️</div>
+
+<div class="card">
+  <div class="title">শুভ জন্মদিন!🤍</div>
+
+  <div class="text">
+শুভ জন্মদিন!🤍
+তুমি জানো আমি তোমাকে ভালোবাসি, তাই আলাদা করে লুকানোর কিছু নেই। আবার এটাও জানি—সব ভালোবাসার শেষ এক জায়গায় হয় না। তবু আজকের দিনে চুপ থাকাটা আমার কাছে ঠিক লাগেনি।
+
+আমি তোমার কাছ থেকে কিছু চাইছি না, কোনো expectationও নেই। শুধু এটুকু বলতে চাই—তুমি আমার জীবনে এমন একজন মানুষ, যার জন্য অনুভব করাটা আমি কখনো regret করিনি। হয়তো সময়, পরিস্থিতি বা জায়গা আমাদের এক না, কিন্তু আমার respect আর care সবসময় একই ছিল!!
+
+আজ তোমার জন্মদিন। আমি চাই তুমি ভালো থাকো—মনের দিক থেকেও, জীবনের দিক থেকেও। যেই পথেই যাও, নিজের মতো করে শান্ত থাকতে পারলেই সেটাই সবচেয়ে জরুরি।আর নিজেকে কখনো একা ভেবো না, তোমার প্রয়োজনে আফি অলওয়েজ বি দেয়ার!
+
+এইটুকুই বলতে চেয়েছিলাম। শুভ জন্মদিন!🤍
+  </div>
+
+  <div class="signature">
+—তোমার সবসময়ের এক শুভাকাঙ্ক্ষী🛐
+  </div>
+</div>
+
+<!-- Music (tap anywhere to start) -->
+<audio id="bgm" loop>
+  <source src="https://cdn.pixabay.com/download/audio/2022/03/15/audio_6c3e8f4a5f.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+// Fireworks effect
+const canvas = document.getElementById("fw");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+function random(min,max){return Math.random()*(max-min)+min;}
+let particles = [];
+
+function firework(){
+  const x = random(50,canvas.width-50);
+  const y = random(50,canvas.height/2);
+  const colors = ["#ff4ecd","#ffd369","#4efcff","#ffffff"];
+  for(let i=0;i<60;i++){
+    particles.push({
+      x,y,
+      vx: random(-5,5),
+      vy: random(-5,5),
+      life:1,
+      color: colors[Math.floor(Math.random()*colors.length)]
+    });
+  }
+}
+
+function animate(){
+  ctx.fillStyle="rgba(0,0,0,0.15)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+  particles.forEach((p,i)=>{
+    p.x+=p.vx;
+    p.y+=p.vy;
+    p.life-=0.02;
+    ctx.fillStyle=p.color;
+    ctx.globalAlpha=p.life;
+    ctx.fillRect(p.x,p.y,3,3);
+    if(p.life<=0) particles.splice(i,1);
+  });
+  ctx.globalAlpha=1;
+  requestAnimationFrame(animate);
+}
+setInterval(firework,800);
+animate();
+
+// Music play on first tap
+let musicStarted=false;
+document.body.addEventListener('click',()=>{
+  if(!musicStarted){
+    document.getElementById('bgm').play();
+    musicStarted=true;
+  }
+});
+</script>
+
+</body>
+</html>
